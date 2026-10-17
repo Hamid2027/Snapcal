@@ -20,8 +20,59 @@ import { WebHeader } from './components/Navigation/WebHeader';
 import { Download } from 'lucide-react';
 
 export default function App() {
-  const [profile, setProfile] = useState<UserProfile | null>(() => getStoredProfile());
-  const [meals, setMeals] = useState<MealItem[]>(() => getStoredMeals());
+  const [profile, setProfile] = useState<UserProfile | null>(() => {
+    const stored = getStoredProfile();
+    if (stored) {
+      if (!stored.dailyCalorieTarget || stored.dailyCalorieTarget === 1950 || stored.dailyCalorieTarget === 1850) {
+        stored.dailyCalorieTarget = 2203;
+        saveStoredProfile(stored);
+      }
+      return stored;
+    }
+    const initial: UserProfile = {
+      name: 'SnapCal Member',
+      goal: 'lose',
+      currentWeightKg: 78,
+      idealWeightKg: 70,
+      weightUnit: 'kg',
+      heightCm: 175,
+      heightUnit: 'cm',
+      sex: 'male',
+      age: 27,
+      workoutsPerWeek: '3-5',
+      activityLevel: 'moderate',
+      diet: 'No specific diet',
+      triedOtherApps: true,
+      referralSource: 'Instagram',
+      notificationsEnabled: true,
+      addBurnedCaloriesBack: false,
+      bmr: 1730,
+      tdee: 2450,
+      dailyCalorieTarget: 2203,
+      targetProteinG: 156,
+      targetCarbsG: 195,
+      targetFatG: 60,
+      targetDate: 'Nov 14, 2026',
+      onboardingCompleted: true,
+      onboardingDate: new Date().toISOString(),
+      firstDayDate: new Date().toISOString().split('T')[0],
+      isPremium: false,
+      scansUsedToday: 0,
+      lastScanDate: new Date().toISOString().split('T')[0],
+      colorTheme: 'emerald',
+    };
+    saveStoredProfile(initial);
+    return initial;
+  });
+
+  const [meals, setMeals] = useState<MealItem[]>(() => {
+    const stored = getStoredMeals();
+    if (!stored || stored.length === 0) {
+      return getDefaultSeedMeals();
+    }
+    return stored;
+  });
+
   const [currentTab, setCurrentTab] = useState<NavTab>('home');
 
   // Modals state
@@ -33,6 +84,24 @@ export default function App() {
   // PWA Install Prompt
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallBanner, setShowInstallBanner] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Ensure seed meals (290 breakfast + 480 lunch = 770) are active for today if no today meals exist
+    const todayStr = new Date().toISOString().split('T')[0];
+    const todayMeals = meals.filter((m) => {
+      try {
+        return new Date(m.loggedAt).toISOString().split('T')[0] === todayStr;
+      } catch {
+        return false;
+      }
+    });
+
+    if (todayMeals.length === 0) {
+      const seed = getDefaultSeedMeals();
+      setMeals(seed);
+      saveStoredMeals(seed);
+    }
+  }, []);
 
   useEffect(() => {
     const handleBeforeInstall = (e: any) => {
@@ -119,7 +188,7 @@ export default function App() {
             addBurnedCaloriesBack: false,
             bmr: 1730,
             tdee: 2450,
-            dailyCalorieTarget: 1950,
+            dailyCalorieTarget: 2203,
             targetProteinG: 156,
             targetCarbsG: 195,
             targetFatG: 60,

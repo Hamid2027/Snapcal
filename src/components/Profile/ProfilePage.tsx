@@ -97,18 +97,19 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <h1 className="text-2xl font-black text-neutral-950 tracking-tight">Profile</h1>
         </div>
 
-        {/* Membership Badge */}
-        <div
+        {/* Membership Badge / Upgrade */}
+        <button
           onClick={profile.isPremium ? undefined : onOpenPaywall}
-          className={`cursor-pointer px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-black transition ${
+          style={profile.isPremium ? undefined : { backgroundColor: '#000000', color: '#FFFFFF' }}
+          className={`px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold transition shadow-xs ${
             profile.isPremium
-              ? 'bg-neutral-950 text-white shadow-sm'
-              : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+              ? 'bg-neutral-950 text-white border border-neutral-800'
+              : 'bg-[#000000] text-[#FFFFFF] font-bold hover:bg-neutral-800'
           }`}
         >
-          <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-          <span>{profile.isPremium ? 'SnapCal Pro' : 'Free Plan (Upgrade)'}</span>
-        </div>
+          <Zap className="w-3.5 h-3.5 text-white fill-white" />
+          <span className="font-bold">{profile.isPremium ? 'SnapCal Pro' : 'Free Plan (Upgrade)'}</span>
+        </button>
       </div>
 
       {/* USER BIOMETRIC SUMMARY CARD */}
@@ -250,7 +251,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="grid grid-cols-2 gap-2">
             {[
               { id: 'emerald' as const, name: 'Calming Sage', dot: 'bg-emerald-500', subtitle: 'Serene botanical green' },
-              { id: 'sunset' as const, name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-orange-500', subtitle: 'Cozy comforting amber' },
+              { id: 'sunset' as const, name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-amber-600', subtitle: 'Cozy comforting amber' },
               { id: 'violet' as const, name: 'Soft Lavender', dot: 'bg-gradient-to-r from-purple-400 to-indigo-500', subtitle: 'Gentle iris & violet' },
               { id: 'ocean' as const, name: 'Nordic Ocean', dot: 'bg-gradient-to-r from-teal-400 to-cyan-500', subtitle: 'Peaceful sea breeze' },
             ].map((t) => {

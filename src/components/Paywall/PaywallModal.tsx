@@ -117,8 +117,8 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             {/* Right Arm holding Carrot 🥕 and Broccoli 🥦 */}
             <path d="M154 110 Q172 120 162 135" stroke="#059669" strokeWidth="12" strokeLinecap="round" />
             {/* Carrot */}
-            <polygon points="152,148 168,142 166,168" fill="#f97316" />
-            <path d="M152,148 L168,142" stroke="#ea580c" strokeWidth="2" />
+            <polygon points="152,148 168,142 166,168" fill="#eab308" />
+            <path d="M152,148 L168,142" stroke="#ca8a04" strokeWidth="2" />
             <path d="M157 142 L152 134 M162 141 L163 132 M166 143 L172 135" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
 
             {/* Broccoli hovering near center hand */}
@@ -224,40 +224,43 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
           </div>
         </div>
 
-        {/* 5-Star Review */}
+        {/* 5-Star Review - Sarah, 26 Testimonial */}
         <div className="bg-neutral-50 rounded-[22px] p-3.5 mb-5 border border-neutral-100 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center font-bold text-neutral-700 shrink-0">
-            A
-          </div>
-          <div className="text-xs space-y-0.5">
-            <div className="flex items-center gap-1.5">
-              <div className="flex text-amber-400">
+          <img
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80"
+            alt="Sarah, 26"
+            className="w-11 h-11 rounded-full object-cover shrink-0 border border-neutral-200 shadow-xs"
+          />
+          <div className="text-xs space-y-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex text-yellow-400">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3 h-3 fill-amber-400" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <span className="font-bold text-neutral-900">Adam, 24</span>
+              <span className="font-bold text-neutral-900">Sarah, 26</span>
               <span className="text-neutral-400 text-[10px]">· Verified User</span>
             </div>
-            <p className="text-neutral-600 font-medium italic">
-              “The best calorie counting app on the market!”
+            <p className="text-neutral-700 font-medium italic text-xs leading-relaxed">
+              “Lost 12 lbs in 30 days with SnapCal! Finally an app that understands women's bodies!”
             </p>
           </div>
         </div>
 
-        {/* Continue Button */}
+        {/* Upgrade / Continue Button */}
         <div className="space-y-3">
           <button
             onClick={handleSubscribe}
             disabled={isProcessing}
-            className="w-full bg-neutral-950 text-white font-bold py-4 px-6 rounded-full hover:bg-neutral-800 transition active:scale-[0.99] text-base shadow-xl shadow-neutral-950/20 flex items-center justify-center gap-2"
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            className="w-full bg-[#000000] text-[#FFFFFF] font-bold py-4 px-6 rounded-full hover:bg-neutral-800 transition active:scale-[0.99] text-base shadow-xl flex items-center justify-center gap-2"
           >
             {isProcessing ? (
               <span className="animate-pulse">Activating SnapCal Pro...</span>
             ) : (
               <>
-                <span>Continue</span>
-                <Zap className="w-5 h-5 text-amber-300 fill-amber-300" />
+                <span className="font-bold">Upgrade to SnapCal Pro</span>
+                <Zap className="w-5 h-5 text-yellow-400 fill-yellow-400" />
               </>
             )}
           </button>

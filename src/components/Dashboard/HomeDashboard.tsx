@@ -43,15 +43,34 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
   const activeTheme = profile.colorTheme || 'emerald';
 
   // Filter today's meals
-  const todaysMeals = meals.filter(
-    (m) => new Date(m.loggedAt).toISOString().split('T')[0] === todayStr
-  );
+  const todaysMeals = meals.filter((m) => {
+    try {
+      return new Date(m.loggedAt).toISOString().split('T')[0] === todayStr;
+    } catch {
+      return true;
+    }
+  });
 
-  // Compute daily totals
-  const consumedCalories = todaysMeals.reduce(
+  // Dynamic meal categorization for exact calorie formula
+  const breakfastMeals = todaysMeals.filter((m) => m.category === 'Breakfast');
+  const lunchMeals = todaysMeals.filter((m) => m.category === 'Lunch');
+  const otherMealsList = todaysMeals.filter((m) => m.category !== 'Breakfast' && m.category !== 'Lunch');
+
+  const breakfastCalories = breakfastMeals.reduce(
     (acc, m) => acc + Math.round(m.calories * (m.portionMultiplier || 1)),
     0
   );
+  const lunchCalories = lunchMeals.reduce(
+    (acc, m) => acc + Math.round(m.calories * (m.portionMultiplier || 1)),
+    0
+  );
+  const otherMealsCalories = otherMealsList.reduce(
+    (acc, m) => acc + Math.round(m.calories * (m.portionMultiplier || 1)),
+    0
+  );
+
+  // Compute daily totals dynamically
+  const consumedCalories = breakfastCalories + lunchCalories + otherMealsCalories;
   const consumedProtein = todaysMeals.reduce(
     (acc, m) => acc + Math.round(m.protein * (m.portionMultiplier || 1)),
     0
@@ -65,7 +84,8 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
     0
   );
 
-  const targetBudget = profile.dailyCalorieTarget;
+  // Dynamic budget calculation: targetBudget (default 2203) - (breakfast + lunch + other) = remaining
+  const targetBudget = profile.dailyCalorieTarget || 2203;
   const caloriesLeft = Math.max(0, targetBudget - consumedCalories);
   const isOverBudget = consumedCalories > targetBudget;
   const percentageConsumed = Math.min(100, Math.round((consumedCalories / targetBudget) * 100));
@@ -92,7 +112,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
 
   const themes: Array<{ id: 'emerald' | 'sunset' | 'violet' | 'ocean'; name: string; dot: string; subtitle: string }> = [
     { id: 'emerald', name: 'Calming Sage', dot: 'bg-emerald-500', subtitle: 'Serene botanical green' },
-    { id: 'sunset', name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-orange-500', subtitle: 'Cozy comforting amber' },
+    { id: 'sunset', name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-amber-600', subtitle: 'Cozy comforting amber' },
     { id: 'violet', name: 'Soft Lavender', dot: 'bg-gradient-to-r from-purple-400 to-indigo-500', subtitle: 'Gentle iris & violet' },
     { id: 'ocean', name: 'Nordic Ocean', dot: 'bg-gradient-to-r from-teal-400 to-cyan-500', subtitle: 'Peaceful sea breeze' },
   ];
@@ -119,7 +139,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
           </button>
 
           {/* 7-Day Flame Streak */}
-          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-md shadow-orange-500/20">
+          <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-rose-500 text-white rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-md shadow-amber-500/20">
             <Flame className="w-4 h-4 fill-white text-white animate-pulse" />
             <span className="text-xs font-black">7 Day Streak</span>
           </div>
@@ -175,7 +195,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
           className="cursor-pointer bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 text-white rounded-[24px] p-4 flex items-center justify-between shadow-lg hover:shadow-xl transition active:scale-[0.99] border border-neutral-800"
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-black shadow-md shadow-orange-500/30">
+            <div className="w-9 h-9 rounded-2xl bg-[#000000] text-white flex items-center justify-center font-black shadow-md border border-neutral-800">
               <Zap className="w-4 h-4 fill-white text-white" />
             </div>
             <div>
@@ -192,9 +212,16 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
               </div>
             </div>
           </div>
-          <span className="text-[11px] font-black text-amber-300 bg-amber-950/60 border border-amber-800/60 px-3 py-1.5 rounded-full shadow-xs">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenPaywall();
+            }}
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            className="text-[11px] font-bold text-[#FFFFFF] bg-[#000000] border border-neutral-700 px-3.5 py-1.5 rounded-full shadow-xs hover:bg-neutral-800 transition"
+          >
             Upgrade
-          </span>
+          </button>
         </div>
       )}
 
@@ -202,11 +229,11 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         {/* Left Column on Desktop: Calorie Ring, Macros, Water */}
         <div className="md:col-span-5 lg:col-span-5 space-y-5 md:sticky md:top-24">
-          {/* CALORIE RING CARD (Vibrant Gradient Circular Gauge) */}
+          {/* CALORIE RING CARD (Dynamic Circular Energy Gauge) */}
           <div className="card-glass border border-neutral-200/80 rounded-[32px] p-6 shadow-sm relative overflow-hidden text-center">
             {/* Subtle Ambient Background Orb */}
             <div className={`absolute -top-12 -right-12 w-44 h-44 rounded-full blur-3xl pointer-events-none ${
-              activeTheme === 'sunset' ? 'bg-orange-300/20' :
+              activeTheme === 'sunset' ? 'bg-amber-300/20' :
               activeTheme === 'violet' ? 'bg-purple-300/20' :
               activeTheme === 'ocean' ? 'bg-cyan-300/20' :
               'bg-emerald-300/20'
@@ -227,8 +254,8 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                   </linearGradient>
                   <linearGradient id="calorieGradientSunset" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#f59e0b" />
-                    <stop offset="50%" stopColor="#f97316" />
-                    <stop offset="100%" stopColor="#f43f5e" />
+                    <stop offset="50%" stopColor="#d97706" />
+                    <stop offset="100%" stopColor="#b45309" />
                   </linearGradient>
                   <linearGradient id="calorieGradientViolet" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#8b5cf6" />
@@ -277,13 +304,13 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                 />
               </svg>
 
-              {/* Center Callout with soft gradient highlight */}
+              {/* Center Callout with Dynamic Remaining Number */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <span className={`text-4xl sm:text-5xl font-black tracking-tight ${
                   isOverBudget
                     ? 'text-rose-600'
                     : activeTheme === 'sunset'
-                    ? 'text-orange-600'
+                    ? 'text-amber-600'
                     : activeTheme === 'violet'
                     ? 'text-violet-600'
                     : activeTheme === 'ocean'
@@ -293,23 +320,34 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                   {isOverBudget ? `+${consumedCalories - targetBudget}` : caloriesLeft}
                 </span>
                 <span className="text-xs font-extrabold uppercase tracking-wider text-neutral-400 mt-0.5">
-                  {isOverBudget ? 'Calories Over' : 'Calories Left'}
+                  {isOverBudget ? 'Calories Over' : 'Remaining'}
                 </span>
                 <span className="text-[11px] font-semibold text-neutral-500 mt-1">
-                  Goal: {targetBudget} kcal
+                  Budget: {targetBudget} kcal
                 </span>
               </div>
             </div>
 
-            {/* Eaten vs Remaining bottom bar */}
+            {/* Dynamic Calorie Equation: 2203 - (290 breakfast + 480 lunch + other) = remaining */}
+            <div className="my-2.5 px-3 py-1.5 rounded-full bg-neutral-100/90 text-neutral-700 text-[11px] font-bold inline-flex items-center gap-1 shadow-2xs flex-wrap justify-center border border-neutral-200/50">
+              <span className="text-neutral-900 font-extrabold">{targetBudget}</span>
+              <span className="text-neutral-400">-</span>
+              <span>
+                ({breakfastCalories} breakfast + {lunchCalories} lunch{otherMealsCalories > 0 ? ` + ${otherMealsCalories} other` : ''})
+              </span>
+              <span className="text-neutral-400">=</span>
+              <span className="text-emerald-700 font-black">{caloriesLeft} remaining</span>
+            </div>
+
+            {/* Consumed vs Remaining bottom bar */}
             <div className="grid grid-cols-2 divide-x divide-neutral-100 pt-3 border-t border-neutral-100 text-xs">
               <div>
-                <div className="text-neutral-400 font-medium">Eaten</div>
+                <div className="text-neutral-400 font-medium">Consumed</div>
                 <div className="text-base font-black text-neutral-950 mt-0.5">{consumedCalories} kcal</div>
               </div>
               <div>
-                <div className="text-neutral-400 font-medium">Daily Target</div>
-                <div className="text-base font-black text-neutral-950 mt-0.5">{targetBudget} kcal</div>
+                <div className="text-neutral-400 font-medium">Remaining</div>
+                <div className="text-base font-black text-emerald-600 mt-0.5">{caloriesLeft} kcal</div>
               </div>
             </div>
           </div>
@@ -333,13 +371,13 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
             </div>
 
             {/* Carbs */}
-            <div className="bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-white border border-amber-100/90 rounded-[24px] p-3.5 shadow-sm text-center">
+            <div className="bg-gradient-to-br from-amber-50/90 via-amber-50/60 to-white border border-amber-100/90 rounded-[24px] p-3.5 shadow-sm text-center">
               <div className="text-[10px] font-black uppercase text-amber-700 tracking-wider">Carbs</div>
               <div className="text-xl font-black text-amber-950 mt-1">{carbsLeft}g</div>
               <div className="text-[10px] text-amber-600/80 font-bold">left</div>
               <div className="w-full bg-amber-100/70 h-2 rounded-full mt-2.5 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 h-full rounded-full transition-all shadow-xs"
+                  className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 h-full rounded-full transition-all shadow-xs"
                   style={{ width: `${Math.min(100, (consumedCarbs / profile.targetCarbsG) * 100)}%` }}
                 />
               </div>

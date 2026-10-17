@@ -46,7 +46,7 @@ export const WebHeader: React.FC<WebHeaderProps> = ({
 
   const themes: Array<{ id: 'emerald' | 'sunset' | 'violet' | 'ocean'; name: string; dot: string; subtitle: string }> = [
     { id: 'emerald', name: 'Calming Sage', dot: 'bg-emerald-500', subtitle: 'Soothing botanical green' },
-    { id: 'sunset', name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-orange-500', subtitle: 'Gentle comforting warm glow' },
+    { id: 'sunset', name: 'Warm Honey', dot: 'bg-gradient-to-r from-amber-400 to-amber-600', subtitle: 'Gentle comforting warm glow' },
     { id: 'violet', name: 'Soft Lavender', dot: 'bg-gradient-to-r from-purple-400 to-indigo-500', subtitle: 'Relaxing violet & iris' },
     { id: 'ocean', name: 'Nordic Ocean', dot: 'bg-gradient-to-r from-teal-400 to-cyan-500', subtitle: 'Tranquil sea breeze & azure' },
   ];
@@ -161,14 +161,15 @@ export const WebHeader: React.FC<WebHeaderProps> = ({
           {/* Pro Badge / Upgrade */}
           <button
             onClick={profile.isPremium ? undefined : onOpenPaywall}
-            className={`px-3 py-1.5 rounded-full text-xs font-black transition flex items-center gap-1.5 ${
+            style={profile.isPremium ? undefined : { backgroundColor: '#000000', color: '#FFFFFF' }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 ${
               profile.isPremium
-                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:from-amber-600 hover:to-orange-600'
+                ? 'bg-neutral-950 text-white border border-neutral-800'
+                : 'bg-[#000000] text-[#FFFFFF] font-bold shadow-xs hover:bg-neutral-800'
             }`}
           >
-            <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>{profile.isPremium ? 'Pro' : 'Upgrade'}</span>
+            <Zap className="w-3.5 h-3.5 fill-current text-white" />
+            <span className="font-bold">{profile.isPremium ? 'Pro' : 'Upgrade'}</span>
           </button>
         </div>
       </div>

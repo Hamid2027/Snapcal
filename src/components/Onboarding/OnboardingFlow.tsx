@@ -178,7 +178,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
       addBurnedCaloriesBack: addBurnedCals,
       bmr: calculatedPlan?.bmr || 1650,
       tdee: calculatedPlan?.tdee || 2350,
-      dailyCalorieTarget: calculatedPlan?.dailyCalorieTarget || 1850,
+      dailyCalorieTarget: calculatedPlan?.dailyCalorieTarget || 2203,
       targetProteinG: calculatedPlan?.targetProteinG || 140,
       targetCarbsG: calculatedPlan?.targetCarbsG || 190,
       targetFatG: calculatedPlan?.targetFatG || 55,

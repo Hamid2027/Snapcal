@@ -368,10 +368,11 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
         {!profile.isPremium && (
           <button
             onClick={onOpenPaywall}
-            className="bg-neutral-950 text-white text-xs font-bold px-3.5 py-2 rounded-full hover:bg-neutral-800 transition flex items-center gap-1.5 shadow-sm active:scale-95"
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            className="bg-[#000000] text-[#FFFFFF] text-xs font-bold px-3.5 py-2 rounded-full hover:bg-neutral-800 transition flex items-center gap-1.5 shadow-sm active:scale-95"
           >
-            <Zap className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
-            <span>Upgrade</span>
+            <Zap className="w-3.5 h-3.5 text-white fill-white" />
+            <span className="font-bold">Upgrade</span>
           </button>
         )}
       </div>
@@ -682,7 +683,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
                     {Math.round(analysisResult.protein * portionMultiplier)}g
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 via-orange-50/50 to-white border border-amber-100 p-3 rounded-2xl">
+                <div className="bg-gradient-to-br from-amber-50 via-amber-50/60 to-white border border-amber-100 p-3 rounded-2xl">
                   <span className="text-[10px] font-black uppercase text-amber-700">Carbs</span>
                   <div className="text-xl font-black text-amber-950 mt-0.5">
                     {Math.round(analysisResult.carbs * portionMultiplier)}g
