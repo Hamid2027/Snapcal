@@ -1,12 +1,53 @@
 import { UserProfile, GoalType, SexType, WorkoutFrequency, ActivityLevel, MealItem, WeightEntry, WaterLog } from '../types';
+import { safeStorage } from './safeStorage';
 
 export const STORAGE_KEYS = {
-  PROFILE: 'snapcal_user_profile',
-  MEALS: 'snapcal_meals',
-  WEIGHTS: 'snapcal_weight_history',
-  WATER: 'snapcal_water_logs',
-  FAVORITES: 'snapcal_favorite_foods',
+  PROFILE: 'scancalai_user_profile',
+  MEALS: 'scancalai_meals',
+  WEIGHTS: 'scancalai_weight_history',
+  WATER: 'scancalai_water_logs',
+  FAVORITES: 'scancalai_favorite_foods',
 };
+
+// Auto-migrate legacy 'snapcal_' keys to 'scancalai_' on initialization
+export function migrateOldStorageKeys(): void {
+  try {
+    const keyPairs = [
+      ['snapcal_user_profile', 'scancalai_user_profile'],
+      ['snapcal_meals', 'scancalai_meals'],
+      ['snapcal_weight_history', 'scancalai_weight_history'],
+      ['snapcal_water_logs', 'scancalai_water_logs'],
+      ['snapcal_favorite_foods', 'scancalai_favorite_foods'],
+    ];
+
+    for (const [oldKey, newKey] of keyPairs) {
+      const oldVal = safeStorage.get(oldKey);
+      if (oldVal !== null && safeStorage.get(newKey) === null) {
+        safeStorage.set(newKey, oldVal);
+      }
+    }
+
+    // Migrate any other snapcal_ keys
+    const totalKeys = safeStorage.length;
+    for (let i = 0; i < totalKeys; i++) {
+      const key = safeStorage.key(i);
+      if (key && key.startsWith('snapcal_')) {
+        const correspondingNewKey = key.replace(/^snapcal_/, 'scancalai_');
+        if (safeStorage.getItem(correspondingNewKey) === null) {
+          const val = safeStorage.getItem(key);
+          if (val !== null) {
+            safeStorage.setItem(correspondingNewKey, val);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    // Graceful fallback for restricted environments
+  }
+}
+
+// Execute migration immediately
+migrateOldStorageKeys();
 
 // Conversions
 export const kgToLbs = (kg: number): number => Math.round(kg * 2.20462 * 10) / 10;
@@ -114,78 +155,76 @@ export function calculateNutritionTargets(
   };
 }
 
-// LocalStorage helpers
+// Safe Storage helpers (with Brave / private browsing in-memory fallback)
 export function getStoredProfile(): UserProfile | null {
   try {
-    const data = localStorage.getItem(STORAGE_KEYS.PROFILE);
+    const data = safeStorage.get(STORAGE_KEYS.PROFILE);
     if (!data) return null;
     return JSON.parse(data);
-  } catch (e) {
-    console.error('Failed reading user profile from localStorage', e);
+  } catch {
     return null;
   }
 }
 
 export function saveStoredProfile(profile: UserProfile): void {
   try {
-    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
-  } catch (e) {
-    console.error('Failed writing user profile to localStorage', e);
+    safeStorage.set(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
+  } catch {
+    // Handled
   }
 }
 
 export function getStoredMeals(): MealItem[] {
   try {
-    const data = localStorage.getItem(STORAGE_KEYS.MEALS);
+    const data = safeStorage.get(STORAGE_KEYS.MEALS);
     if (!data) return getDefaultSeedMeals();
     return JSON.parse(data);
-  } catch (e) {
-    console.error('Failed reading meals from localStorage', e);
-    return [];
+  } catch {
+    return getDefaultSeedMeals();
   }
 }
 
 export function saveStoredMeals(meals: MealItem[]): void {
   try {
-    localStorage.setItem(STORAGE_KEYS.MEALS, JSON.stringify(meals));
-  } catch (e) {
-    console.error('Failed writing meals to localStorage', e);
+    safeStorage.set(STORAGE_KEYS.MEALS, JSON.stringify(meals));
+  } catch {
+    // Handled
   }
 }
 
 export function getStoredWeights(): WeightEntry[] {
   try {
-    const data = localStorage.getItem(STORAGE_KEYS.WEIGHTS);
+    const data = safeStorage.get(STORAGE_KEYS.WEIGHTS);
     if (!data) return [];
     return JSON.parse(data);
-  } catch (e) {
+  } catch {
     return [];
   }
 }
 
 export function saveStoredWeights(weights: WeightEntry[]): void {
   try {
-    localStorage.setItem(STORAGE_KEYS.WEIGHTS, JSON.stringify(weights));
-  } catch (e) {
-    console.error('Failed writing weight entries', e);
+    safeStorage.set(STORAGE_KEYS.WEIGHTS, JSON.stringify(weights));
+  } catch {
+    // Handled
   }
 }
 
 export function getStoredWater(date: string): number {
   try {
-    const data = localStorage.getItem(STORAGE_KEYS.WATER);
+    const data = safeStorage.get(STORAGE_KEYS.WATER);
     if (!data) return 0;
     const logs: WaterLog[] = JSON.parse(data);
     const found = logs.find((l) => l.date === date);
     return found ? found.ml : 0;
-  } catch (e) {
+  } catch {
     return 0;
   }
 }
 
 export function saveStoredWater(date: string, ml: number): void {
   try {
-    const data = localStorage.getItem(STORAGE_KEYS.WATER);
+    const data = safeStorage.get(STORAGE_KEYS.WATER);
     let logs: WaterLog[] = data ? JSON.parse(data) : [];
     const index = logs.findIndex((l) => l.date === date);
     if (index >= 0) {
@@ -193,9 +232,9 @@ export function saveStoredWater(date: string, ml: number): void {
     } else {
       logs.push({ date, ml });
     }
-    localStorage.setItem(STORAGE_KEYS.WATER, JSON.stringify(logs));
-  } catch (e) {
-    console.error('Failed saving water log', e);
+    safeStorage.set(STORAGE_KEYS.WATER, JSON.stringify(logs));
+  } catch {
+    // Handled
   }
 }
 

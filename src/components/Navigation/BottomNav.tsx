@@ -32,10 +32,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
                 aria-label="Scan Food"
               >
                 <div
+                  style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
                   className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
                     isActive
-                      ? 'bg-neutral-950 text-white shadow-xl shadow-neutral-950/30 ring-4 ring-emerald-400/40'
-                      : 'bg-gradient-to-tr from-neutral-950 to-neutral-800 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                      ? 'bg-[#000000] text-white shadow-xl shadow-neutral-950/30 ring-4 ring-emerald-400/40'
+                      : 'bg-[#000000] text-white shadow-lg hover:shadow-xl hover:scale-105'
                   }`}
                 >
                   <Icon className="w-6 h-6 stroke-[2.3] text-emerald-400" />

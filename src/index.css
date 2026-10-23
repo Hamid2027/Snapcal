@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+* { box-sizing: border-box; }
+html,body { margin:0; padding:0; width:100%; overflow-x:hidden; }
+
 @layer utilities {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 1rem);

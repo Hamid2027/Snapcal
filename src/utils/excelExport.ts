@@ -78,7 +78,7 @@ export function exportCalorieLogExcel(
 
   // 3. SHEET: Settings (user personal targets & Mifflin-St Jeor configuration)
   const settingsRows = [
-    { 'Setting': 'Application', 'Value': 'SnapCal AI Calorie Tracker' },
+    { 'Setting': 'Application', 'Value': 'Scancalai AI Calorie Tracker' },
     { 'Setting': 'Export Date', 'Value': new Date().toLocaleString() },
     { 'Setting': 'User Goal', 'Value': profile.goal.toUpperCase() },
     { 'Setting': 'Current Weight', 'Value': `${profile.currentWeightKg} kg (${Math.round(profile.currentWeightKg * 2.20462)} lbs)` },
@@ -97,7 +97,7 @@ export function exportCalorieLogExcel(
     { 'Setting': 'Target Fat', 'Value': `${profile.targetFatG} g` },
     { 'Setting': 'Add Burned Calories Back', 'Value': profile.addBurnedCaloriesBack ? 'Yes' : 'No' },
     { 'Setting': '90-Day Target Milestone Date', 'Value': profile.targetDate },
-    { 'Setting': 'Membership Tier', 'Value': profile.isPremium ? 'SnapCal Premium Pro' : 'Free Tier' },
+    { 'Setting': 'Membership Tier', 'Value': profile.isPremium ? 'Scancalai Premium Pro' : 'Free Tier' },
   ];
 
   const wsSettings = XLSX.utils.json_to_sheet(settingsRows);

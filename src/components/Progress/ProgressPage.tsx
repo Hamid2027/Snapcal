@@ -191,7 +191,8 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({ profile, meals, onOp
 
           <button
             onClick={() => setShowWeightModal(true)}
-            className="bg-neutral-950 text-white text-xs font-bold px-3.5 py-2 rounded-full hover:bg-neutral-800 transition active:scale-95 flex items-center gap-1 shadow-sm"
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            className="bg-[#000000] text-[#FFFFFF] text-xs font-bold px-3.5 py-2 rounded-full hover:bg-neutral-800 transition active:scale-95 flex items-center gap-1 shadow-sm"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Log Weight</span>
@@ -362,7 +363,7 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({ profile, meals, onOp
         <div className="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-4 space-y-1.5">
           <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs">
             <Sparkles className="w-4 h-4 text-emerald-600" />
-            <span>SnapCal Dietitian Observation</span>
+            <span>Scancalai Dietitian Observation</span>
           </div>
           <p className="text-xs text-emerald-800 leading-relaxed">
             {profile.goal === 'lose'

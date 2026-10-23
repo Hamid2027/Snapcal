@@ -80,7 +80,7 @@ export const ManualLogModal: React.FC<ManualLogModalProps> = ({
       fat: item.fat,
       healthScore: item.healthScore,
       portionSize: item.portion,
-      summary: `Verified nutrition from SnapCal food database`,
+      summary: `Verified nutrition from Scancalai food database`,
     });
     setPortionMultiplier(1);
     setDescription(item.name);
@@ -117,7 +117,7 @@ export const ManualLogModal: React.FC<ManualLogModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-      <div className="w-full max-w-lg bg-white rounded-t-[32px] sm:rounded-[32px] p-6 max-h-[92vh] overflow-y-auto relative shadow-2xl border border-neutral-100 flex flex-col space-y-5">
+      <div className="w-full max-w-lg bg-white rounded-t-[32px] sm:rounded-[32px] p-6 max-h-[92vh] overflow-y-auto overflow-hidden relative shadow-2xl border border-neutral-100 flex flex-col space-y-5">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
           <div>
@@ -154,7 +154,8 @@ export const ManualLogModal: React.FC<ManualLogModalProps> = ({
             <button
               onClick={() => handleEstimateAI()}
               disabled={isLoading || !description.trim()}
-              className="bg-neutral-950 text-white font-bold px-5 py-3 rounded-2xl hover:bg-neutral-800 transition disabled:opacity-50 text-xs flex items-center gap-1.5 shrink-0"
+              style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+              className="bg-[#000000] text-[#FFFFFF] font-bold px-5 py-3 rounded-2xl hover:bg-neutral-800 transition disabled:opacity-50 text-xs flex items-center gap-1.5 shrink-0"
             >
               {isLoading ? (
                 <span className="animate-pulse">Estimating...</span>
@@ -252,7 +253,8 @@ export const ManualLogModal: React.FC<ManualLogModalProps> = ({
 
             <button
               onClick={handleConfirmLog}
-              className="w-full bg-neutral-950 text-white font-bold py-3.5 rounded-full hover:bg-neutral-800 transition text-sm flex items-center justify-center gap-2 shadow-md"
+              style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+              className="w-full bg-[#000000] text-[#FFFFFF] font-bold py-3.5 rounded-full hover:bg-neutral-800 transition text-sm flex items-center justify-center gap-2 shadow-md"
             >
               <Check className="w-4 h-4 stroke-[2.5]" />
               <span>Log Meal to Today</span>

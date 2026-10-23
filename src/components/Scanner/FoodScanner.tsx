@@ -46,6 +46,18 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [cameraActive, setCameraActive] = useState<boolean>(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [hasLiveCamera, setHasLiveCamera] = useState<boolean>(() => {
+    try {
+      return Boolean(
+        typeof navigator !== 'undefined' &&
+        navigator?.mediaDevices &&
+        typeof navigator.mediaDevices.getUserMedia === 'function' &&
+        (window.isSecureContext ?? true)
+      );
+    } catch {
+      return false;
+    }
+  });
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
@@ -67,11 +79,21 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
     else setSelectedCategory('Snack');
   }, []);
 
-  // Initialize camera stream
+  // Initialize camera stream with graceful fallback for Brave Shields / restricted browsers
   const startCamera = async (targetFacing: 'environment' | 'user' = facingMode) => {
     try {
       setCameraError(null);
       stopCamera();
+
+      if (
+        typeof navigator === 'undefined' ||
+        !navigator?.mediaDevices ||
+        typeof navigator.mediaDevices.getUserMedia !== 'function'
+      ) {
+        setHasLiveCamera(false);
+        setScanMode('upload');
+        return;
+      }
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -84,24 +106,42 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        try {
+          await videoRef.current.play();
+        } catch {
+          // Handled browser autoplay policies
+        }
         setCameraActive(true);
+        setHasLiveCamera(true);
       }
-    } catch (err: any) {
-      console.warn('getUserMedia error:', err);
+    } catch {
+      // Graceful fallback: Brave Shields blocked camera or user denied permission
       setCameraActive(false);
-      setCameraError(
-        'Live camera access is unavailable in this browser. You can easily upload or select any food photo from your photo library or files below.'
-      );
+      setHasLiveCamera(false);
       setScanMode('upload');
+      setCameraError(
+        'Live camera access is restricted or blocked by browser shields. Use the camera upload button below to take a photo.'
+      );
     }
   };
 
   const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
+    try {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        if (stream && stream.getTracks) {
+          stream.getTracks().forEach((track) => {
+            try {
+              track.stop();
+            } catch {
+              // Ignore
+            }
+          });
+        }
+        videoRef.current.srcObject = null;
+      }
+    } catch {
+      // Ignore
     }
     setCameraActive(false);
   };
@@ -204,7 +244,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
         fat: preset.fat,
         healthScore: preset.healthScore,
         portionSize: preset.portion,
-        summary: `Nutrient breakdown verified by SnapCal clinical nutrition engine.`,
+        summary: `Nutrient breakdown verified by Scancalai clinical nutrition engine.`,
       });
       setEditedName(preset.name);
       setPortionMultiplier(1);
@@ -298,7 +338,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
       loggedAt: new Date().toISOString(),
       imageUrl: capturedImage || undefined,
       source: 'camera',
-      notes: analysisResult.summary || 'Logged via SnapCal Vision AI',
+      notes: analysisResult.summary || 'Logged via Scancalai Vision AI',
     };
 
     onMealLogged(meal);
@@ -348,7 +388,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
             <div className="text-xs font-black text-neutral-950 flex items-center gap-1.5">
               <span>
                 {profile.isPremium
-                  ? 'Unlimited AI Scans (SnapCal Pro)'
+                  ? 'Unlimited AI Scans (Scancalai Pro)'
                   : `${scanAllowance.remainingToday}/${scanAllowance.allowedToday} free scans left today`}
               </span>
               {!profile.isPremium && scanAllowance.remainingToday === 0 && (
@@ -388,8 +428,8 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
         </div>
       )}
 
-      {/* SCANNER MODES TOGGLE: Photo Library / Upload vs Live Viewfinder */}
-      {!capturedImage && (
+      {/* SCANNER MODES TOGGLE: Photo Library / Upload vs Live Viewfinder (Only when live camera is available) */}
+      {!capturedImage && hasLiveCamera && (
         <div className="bg-neutral-100/90 p-1.5 rounded-2xl flex gap-1.5 shadow-2xs">
           <button
             onClick={() => {
@@ -423,7 +463,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
       )}
 
       {/* UPLOAD / GALLERY VIEW (Optimized for Web & Mobile Phones) */}
-      {!capturedImage && scanMode === 'upload' && (
+      {!capturedImage && (scanMode === 'upload' || !hasLiveCamera) && (
         <div className="space-y-5">
           {/* Main Upload Drop Box with Drag-and-Drop */}
           <div
@@ -447,29 +487,41 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
               Select or Take a Food Photo
             </h3>
             <p className="text-xs text-neutral-500 mt-1.5 max-w-sm mx-auto leading-relaxed">
-              Choose any photo from your phone's photo library, take a new snapshot, or drag and drop an image here.
+              {!hasLiveCamera
+                ? 'Live camera stream is blocked by browser shields. Take a snapshot directly using the upload button below.'
+                : 'Choose any photo from your phone’s photo library, take a new snapshot, or drag and drop an image here.'}
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              {/* Button 1: Photo Library / Gallery Picker (Works flawlessly on Mobile & Desktop) */}
-              <button
-                type="button"
-                onClick={() => galleryInputRef.current?.click()}
-                className="bg-neutral-950 text-white font-extrabold px-6 py-3.5 rounded-full hover:bg-neutral-800 transition active:scale-95 text-xs shadow-md flex items-center gap-2"
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+              {/* Primary Native Camera / Upload Button with capture="environment" */}
+              <label
+                style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+                className="cursor-pointer bg-[#000000] text-[#FFFFFF] font-extrabold px-8 py-3.5 rounded-full hover:bg-neutral-800 transition active:scale-95 text-xs shadow-md flex items-center gap-2"
               >
-                <ImageIcon className="w-4 h-4 text-emerald-400" />
-                <span>Choose from Photos</span>
-              </button>
+                <Camera className="w-4 h-4 text-emerald-400" />
+                <span>Take Photo / Upload Food</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
 
-              {/* Button 2: Direct Camera Capture (Mobile Shutter) */}
-              <button
-                type="button"
-                onClick={() => cameraInputRef.current?.click()}
-                className="bg-neutral-100 hover:bg-neutral-200 text-neutral-900 font-extrabold px-5 py-3.5 rounded-full transition active:scale-95 text-xs flex items-center gap-2 border border-neutral-200/60"
+              {/* Gallery fallback */}
+              <label
+                className="cursor-pointer bg-neutral-100 hover:bg-neutral-200 text-neutral-900 font-extrabold px-6 py-3.5 rounded-full transition active:scale-95 text-xs flex items-center gap-2 border border-neutral-200/60"
               >
-                <Camera className="w-4 h-4 text-neutral-700" />
-                <span>Take Photo</span>
-              </button>
+                <ImageIcon className="w-4 h-4 text-neutral-700" />
+                <span>Photo Library</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
             </div>
 
             <div className="text-[11px] text-neutral-400 mt-4">
@@ -515,7 +567,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
       )}
 
       {/* LIVE CAMERA VIEWFINDER */}
-      {!capturedImage && scanMode === 'camera' && (
+      {!capturedImage && scanMode === 'camera' && hasLiveCamera && (
         <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full rounded-[32px] overflow-hidden bg-neutral-950 border-2 border-neutral-800 shadow-xl flex flex-col justify-between p-5">
           {/* Video Stream */}
           <video
@@ -529,7 +581,7 @@ export const FoodScanner: React.FC<FoodScannerProps> = ({
           <div className="relative z-10 flex-1 flex flex-col justify-between pointer-events-none">
             <div className="flex justify-between items-center text-white/90">
               <span className="text-[11px] font-bold uppercase tracking-wider bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-                SnapCal AI Vision
+                Scancalai AI Vision
               </span>
               <button
                 type="button"

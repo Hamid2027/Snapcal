@@ -65,7 +65,7 @@ export const WebHeader: React.FC<WebHeaderProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-black text-lg tracking-tight text-neutral-950">
-                SnapCal
+                Scancalai
               </span>
             </div>
             <div className="text-[10px] text-neutral-400 font-semibold leading-none hidden sm:block">
@@ -152,7 +152,8 @@ export const WebHeader: React.FC<WebHeaderProps> = ({
           {/* Quick Scan CTA */}
           <button
             onClick={onOpenScanner}
-            className="hidden sm:flex bg-neutral-950 text-white font-extrabold px-3.5 py-1.5 rounded-full hover:bg-neutral-800 transition active:scale-95 text-xs items-center gap-1.5 shadow-sm"
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            className="hidden sm:flex bg-[#000000] text-[#FFFFFF] font-extrabold px-3.5 py-1.5 rounded-full hover:bg-neutral-800 transition active:scale-95 text-xs items-center gap-1.5 shadow-sm"
           >
             <Camera className="w-3.5 h-3.5 text-emerald-400" />
             <span>Scan</span>
@@ -161,10 +162,10 @@ export const WebHeader: React.FC<WebHeaderProps> = ({
           {/* Pro Badge / Upgrade */}
           <button
             onClick={profile.isPremium ? undefined : onOpenPaywall}
-            style={profile.isPremium ? undefined : { backgroundColor: '#000000', color: '#FFFFFF' }}
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
             className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 ${
               profile.isPremium
-                ? 'bg-neutral-950 text-white border border-neutral-800'
+                ? 'bg-[#000000] text-[#FFFFFF] border border-neutral-800'
                 : 'bg-[#000000] text-[#FFFFFF] font-bold shadow-xs hover:bg-neutral-800'
             }`}
           >

@@ -74,15 +74,15 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
             <div className="space-y-4">
               <h4 className="font-bold text-neutral-900 text-sm">1. Agreement to Terms</h4>
               <p>
-                By accessing or using SnapCal, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may discontinue use of the application.
+                By accessing or using Scancalai, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may discontinue use of the application.
               </p>
               <h4 className="font-bold text-neutral-900 text-sm">2. Medical Disclaimer</h4>
               <p>
-                SnapCal provides general nutritional calculations based on clinical formulas (e.g. Mifflin-St Jeor) and AI computer vision estimates. It is not intended as medical advice or clinical diagnosis. Always consult a certified physician or registered dietitian before undertaking any significant caloric restriction or dietary modification.
+                Scancalai provides general nutritional calculations based on clinical formulas (e.g. Mifflin-St Jeor) and AI computer vision estimates. It is not intended as medical advice or clinical diagnosis. Always consult a certified physician or registered dietitian before undertaking any significant caloric restriction or dietary modification.
               </p>
               <h4 className="font-bold text-neutral-900 text-sm">3. Subscriptions & Freemium Policy</h4>
               <p>
-                Users receive free daily scans (2 scans on day 1, followed by 1 scan per day). Unlocking SnapCal Pro grants unlimited scans, enhanced weekly analytics, and custom macro distribution. Subscriptions renew automatically unless cancelled prior to the renewal date via user settings.
+                Users receive free daily scans (2 scans on day 1, followed by 1 scan per day). Unlocking Scancalai Pro grants unlimited scans, enhanced weekly analytics, and custom macro distribution. Subscriptions renew automatically unless cancelled prior to the renewal date via user settings.
               </p>
               <h4 className="font-bold text-neutral-900 text-sm">4. Cancellation & Refunds</h4>
               <p>
@@ -172,7 +172,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
                     Send Message
                   </button>
                   <div className="text-center text-[11px] text-neutral-400 pt-1">
-                    Direct Email: <a href="mailto:support@snapcal.app" className="underline font-semibold">support@snapcal.app</a>
+                    Direct Email: <a href="mailto:support@scancalai.com" className="underline font-semibold">support@scancalai.com</a>
                   </div>
                 </form>
               )}
@@ -182,9 +182,9 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
           {/* COOKIE POLICY */}
           {activeModal === 'cookies' && (
             <div className="space-y-4">
-              <h4 className="font-bold text-neutral-900 text-sm">How SnapCal Uses Storage</h4>
+              <h4 className="font-bold text-neutral-900 text-sm">How Scancalai Uses Storage</h4>
               <p>
-                SnapCal uses browser localStorage and session cookies exclusively for essential functionality, such as keeping you logged in, persisting your custom Mifflin-St Jeor daily calorie budget, caching logged meals, and honoring your scan quota.
+                Scancalai uses browser localStorage and session cookies exclusively for essential functionality, such as keeping you logged in, persisting your custom Mifflin-St Jeor daily calorie budget, caching logged meals, and honoring your scan quota.
               </p>
               <h4 className="font-bold text-neutral-900 text-sm">No Advertising or 3rd Party Trackers</h4>
               <p>
@@ -199,7 +199,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
               {[
                 {
                   q: 'How does AI food scanning work?',
-                  a: 'SnapCal passes your meal photo to Gemini Vision AI to recognize individual ingredients, compute volumetric portion estimates, and calculate total calories, protein, carbohydrates, fat, and a micronutrient Health Score (1-10).'
+                  a: 'Scancalai passes your meal photo to Gemini Vision AI to recognize individual ingredients, compute volumetric portion estimates, and calculate total calories, protein, carbohydrates, fat, and a micronutrient Health Score (1-10).'
                 },
                 {
                   q: 'What is the Mifflin-St Jeor equation?',
@@ -207,7 +207,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
                 },
                 {
                   q: 'How do the free scans work?',
-                  a: 'All users receive 2 free AI photo scans on their first day, and 1 free scan every day thereafter. SnapCal Pro unlocks unlimited scans anytime.'
+                  a: 'All users receive 2 free AI photo scans on their first day, and 1 free scan every day thereafter. Scancalai Pro unlocks unlimited scans anytime.'
                 },
                 {
                   q: 'Can I export my logs to Microsoft Excel?',

@@ -30,7 +30,7 @@ export default function App() {
       return stored;
     }
     const initial: UserProfile = {
-      name: 'SnapCal Member',
+      name: 'Scancalai Member',
       goal: 'lose',
       currentWeightKg: 78,
       idealWeightKg: 70,
@@ -170,7 +170,7 @@ export default function App() {
         }}
         onSignIn={() => {
           const sampleProfile: UserProfile = {
-            name: 'SnapCal Member',
+            name: 'Scancalai Member',
             goal: 'lose',
             currentWeightKg: 78,
             idealWeightKg: 70,
@@ -217,7 +217,7 @@ export default function App() {
   const themeClass = profile?.colorTheme ? `bg-theme-${profile.colorTheme}` : 'bg-theme-emerald';
 
   return (
-    <div className={`min-h-screen ${themeClass} text-neutral-900 selection:bg-neutral-900 selection:text-white font-['Inter',sans-serif] flex flex-col justify-between transition-colors duration-500`}>
+    <div className={`min-h-screen ${themeClass} text-neutral-900 selection:bg-neutral-900 selection:text-white font-['Inter',system-ui,-apple-system,sans-serif] flex flex-col justify-between transition-colors duration-500`}>
       {/* PWA Install Banner */}
       {showInstallBanner && (
         <aside aria-label="App Installation" className="bg-neutral-950 text-white px-4 py-2.5 text-xs flex items-center justify-between sticky top-0 z-50">
@@ -225,7 +225,7 @@ export default function App() {
             <span className="w-5 h-5 rounded-md bg-white text-neutral-950 font-black flex items-center justify-center text-[10px]">
               S
             </span>
-            <span className="font-semibold">Install SnapCal App for full-screen camera access</span>
+            <span className="font-semibold">Install Scancalai App for full-screen camera access</span>
           </div>
           <button
             onClick={handleInstallClick}
@@ -311,9 +311,9 @@ export default function App() {
         )}
       </main>
 
-      {/* App Footer Links */}
-      <footer className="hidden sm:block border-t border-neutral-200/60 mt-12 py-6 text-center">
-        <div className="max-w-md mx-auto px-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-1.5 text-xs text-neutral-400 font-semibold">
+      {/* App Footer Links - Available on all screens */}
+      <footer className="border-t border-neutral-200/60 mt-12 pt-6 pb-28 sm:pb-8 text-center">
+        <div className="max-w-md mx-auto px-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-xs text-neutral-400 font-semibold">
           <button
             onClick={() => setLegalModal('privacy')}
             className="hover:text-neutral-700 transition"
@@ -332,14 +332,14 @@ export default function App() {
             onClick={() => setLegalModal('contact')}
             className="hover:text-neutral-700 transition"
           >
-            Contact
+            Contact Us
           </button>
           <span>·</span>
           <button
             onClick={() => setLegalModal('cookies')}
             className="hover:text-neutral-700 transition"
           >
-            Cookies
+            Cookie Policy
           </button>
           <span>·</span>
           <button
@@ -349,8 +349,8 @@ export default function App() {
             FAQ
           </button>
         </div>
-        <div className="text-[10px] text-neutral-400 mt-2">
-          © {new Date().getFullYear()} SnapCal · Cal AI Experience
+        <div className="text-[10px] text-neutral-400 mt-2.5">
+          © {new Date().getFullYear()} Scancalai · Cal AI Experience · All rights reserved
         </div>
       </footer>
 

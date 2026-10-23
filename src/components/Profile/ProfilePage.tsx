@@ -108,7 +108,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           }`}
         >
           <Zap className="w-3.5 h-3.5 text-white fill-white" />
-          <span className="font-bold">{profile.isPremium ? 'SnapCal Pro' : 'Free Plan (Upgrade)'}</span>
+          <span className="font-bold">{profile.isPremium ? 'Scancalai Pro' : 'Free Plan (Upgrade)'}</span>
         </button>
       </div>
 
@@ -120,7 +120,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
           <div>
             <h3 className="font-extrabold text-lg text-neutral-950 leading-tight">
-              SnapCal Member
+              Scancalai Member
             </h3>
             <div className="text-xs text-neutral-500 flex items-center gap-1.5 mt-0.5">
               <span className="capitalize font-bold text-neutral-800">
@@ -409,7 +409,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </button>
         </div>
         <div className="text-[10px] text-neutral-400 pt-1">
-          SnapCal Inc. · Version 2.4.0 · Production Ready
+          Scancalai Inc. · Version 2.4.0 · Production Ready
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 {
-  "name": "SnapCal - AI Calorie Tracker",
-  "short_name": "SnapCal",
+  "name": "Scancalai",
+  "short_name": "Scancalai",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "orientation": "portrait-primary",
-  "description": "Minimal AI Calorie and Nutrition Tracking",
+  "description": "Minimal AI Calorie and Nutrition Tracking like Cal AI",
   "icons": [
     {
       "src": "/icon.svg",

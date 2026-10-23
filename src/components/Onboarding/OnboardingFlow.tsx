@@ -157,7 +157,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
     const todayStr = now.split('T')[0];
 
     const finalProfile: UserProfile = {
-      name: 'SnapCal User',
+      name: 'Scancalai User',
       goal,
       currentWeightKg: weightUnit === 'lbs' ? lbsToKg(currentWeight) : currentWeight,
       idealWeightKg: goal === 'maintain' ? (weightUnit === 'lbs' ? lbsToKg(currentWeight) : currentWeight) : (weightUnit === 'lbs' ? lbsToKg(idealWeight) : idealWeight),
@@ -196,7 +196,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
   };
 
   return (
-    <div className="min-h-screen bg-[#fbfbfb] text-neutral-900 flex flex-col justify-between selection:bg-neutral-900 selection:text-white font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-[#fbfbfb] text-neutral-900 flex flex-col justify-between selection:bg-neutral-900 selection:text-white font-['Inter',system-ui,-apple-system,sans-serif]">
       {/* Top Header / Progress Indicator */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-100 px-4 py-3 sm:px-6">
         <div className="max-w-md mx-auto flex items-center justify-between">
@@ -216,7 +216,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
             <span className="w-6 h-6 rounded-lg bg-black text-white flex items-center justify-center text-xs font-black shadow-sm">
               S
             </span>
-            <span>SnapCal</span>
+            <span>Scancalai</span>
           </div>
 
           <div className="text-xs font-semibold text-neutral-400 w-12 text-right">
@@ -253,7 +253,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
               <div className="space-y-3">
                 <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
                   Calorie tracking <br />
-                  <span className="text-neutral-500">made effortless</span>
+                  <span className="text-neutral-500">made easy</span>
                 </h1>
                 <p className="text-neutral-500 text-sm sm:text-base leading-relaxed px-4">
                   Snap a photo of your meal. Instant calorie & macro breakdown with personalized Mifflin-St Jeor nutrition goals.
@@ -1021,7 +1021,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                   Where did you hear about us?
                 </h2>
                 <p className="text-sm text-neutral-500">
-                  Help us know how you found SnapCal.
+                  Help us know how you found Scancalai.
                 </p>
               </div>
 
@@ -1068,7 +1068,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                   <Bell className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-950">
-                  Stay consistent with smart reminders
+                  Reach your goals with notifications
                 </h2>
                 <p className="text-sm text-neutral-500 max-w-sm mx-auto">
                   Users who enable notifications are 3.8x more likely to hit their target goal weight.
@@ -1076,27 +1076,29 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
               </div>
 
               {/* Pointing hand indicator */}
-              <div className="text-center text-3xl animate-bounce pt-2">
-                👇
+              <div className="flex items-center justify-center gap-2 text-2xl animate-bounce pt-2">
+                <span>👉</span>
+                <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Tap Allow to continue</span>
+                <span>👈</span>
               </div>
 
               {/* Fake iOS System Dialog Box */}
               <div className="relative mx-auto max-w-xs bg-white/95 backdrop-blur-xl border border-neutral-200 shadow-2xl rounded-[24px] overflow-hidden text-center transform transition-transform">
                 <div className="p-5 space-y-2">
                   <h3 className="font-bold text-neutral-950 text-base leading-snug">
-                    “SnapCal” Would Like to Send You Notifications
+                    Scancalai would like to send you Notifications
                   </h3>
                   <p className="text-xs text-neutral-500 leading-relaxed">
                     Notifications may include meal logging nudges, streak updates, and milestone alerts.
                   </p>
                 </div>
-                <div className="border-t border-neutral-100 grid grid-cols-2 text-sm font-semibold divide-x divide-neutral-100">
+                <div className="border-t border-neutral-100 flex text-sm font-semibold divide-x divide-neutral-100">
                   <button
                     onClick={() => {
                       setNotificationsAllowed(false);
                       handleNext();
                     }}
-                    className="py-3.5 text-blue-500 hover:bg-neutral-50 active:bg-neutral-100 transition"
+                    className="flex-1 py-3.5 text-blue-500 hover:bg-neutral-50 active:bg-neutral-100 transition"
                   >
                     Don’t Allow
                   </button>
@@ -1105,7 +1107,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                       setNotificationsAllowed(true);
                       handleNext();
                     }}
-                    className="py-3.5 text-blue-600 font-bold hover:bg-neutral-50 active:bg-neutral-100 transition"
+                    className="flex-1 py-3.5 text-blue-600 font-bold hover:bg-neutral-50 active:bg-neutral-100 transition"
                   >
                     Allow
                   </button>
@@ -1188,20 +1190,20 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                 </p>
               </div>
 
-              {/* Big Metrics Grid */}
-              <div className="bg-white border border-neutral-200/80 rounded-[28px] p-6 shadow-sm grid grid-cols-3 divide-x divide-neutral-100 text-center">
-                <div className="px-2">
+              {/* Big Metrics Grid (Flexbox for cross-browser stability) */}
+              <div className="bg-white border border-neutral-200/80 rounded-[28px] overflow-hidden p-6 shadow-sm flex items-center justify-between divide-x divide-neutral-100 text-center">
+                <div className="flex-1 px-2">
                   <div className="flex items-center justify-center gap-1 text-amber-500 font-black text-xl">
                     <span>4.8</span>
                     <Star className="w-4 h-4 fill-amber-400" />
                   </div>
                   <div className="text-[11px] text-neutral-400 font-medium mt-0.5">Average Rating</div>
                 </div>
-                <div className="px-2">
+                <div className="flex-1 px-2">
                   <div className="font-black text-xl text-neutral-950">300K+</div>
                   <div className="text-[11px] text-neutral-400 font-medium mt-0.5">App Ratings</div>
                 </div>
-                <div className="px-2">
+                <div className="flex-1 px-2">
                   <div className="font-black text-xl text-neutral-950">10M+</div>
                   <div className="text-[11px] text-neutral-400 font-medium mt-0.5">Active Users</div>
                 </div>
@@ -1276,7 +1278,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                   You have great potential to crush your goal
                 </h2>
                 <p className="text-sm text-neutral-500">
-                  Based on your metabolic data and commitment to SnapCal.
+                  Based on your metabolic data and commitment to Scancalai.
                 </p>
               </div>
 
@@ -1406,19 +1408,19 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
               <div className="bg-white border border-neutral-200/80 rounded-[28px] p-5 shadow-sm space-y-3">
                 <div className="text-xs font-bold text-neutral-400 uppercase tracking-wide">Example Scenario</div>
                 <div className="flex items-center justify-between text-sm py-1 border-b border-neutral-100">
-                  <span className="text-neutral-600">Base Daily Target:</span>
-                  <span className="font-bold text-neutral-950">2,000 kcal</span>
+                  <span className="text-neutral-600">Today's goal:</span>
+                  <span className="font-bold text-neutral-950">500 Cals</span>
                 </div>
                 <div className="flex items-center justify-between text-sm py-1 border-b border-neutral-100">
                   <span className="text-neutral-600 flex items-center gap-1.5">
                     <Flame className="w-4 h-4 text-amber-500" />
-                    Running Workout:
+                    Running:
                   </span>
-                  <span className="font-bold text-emerald-600">+400 kcal</span>
+                  <span className="font-bold text-emerald-600">+100 cals</span>
                 </div>
                 <div className="flex items-center justify-between text-sm font-bold pt-1">
                   <span>If enabled:</span>
-                  <span className="text-neutral-950 font-black">2,400 kcal budget</span>
+                  <span className="text-neutral-950 font-black">600 Cals budget</span>
                 </div>
               </div>
 
@@ -1473,7 +1475,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                   Thank you for trusting us!
                 </h2>
                 <p className="text-neutral-500 text-sm leading-relaxed max-w-sm mx-auto">
-                  Now let’s synthesize your biological parameters and generate your custom Mifflin-St Jeor plan...
+                  Thank you for trusting us! Now let's personalize Scancalai for you...
                 </p>
               </div>
 
@@ -1536,7 +1538,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
 
                   <div className="space-y-2">
                     <h2 className="text-2xl font-extrabold text-neutral-950">
-                      Time to generate your custom plan!
+                      All done! Time to generate your custom plan!
                     </h2>
                     <p className="text-sm text-neutral-500 animate-pulse font-medium">
                       {generatingStage}
@@ -1621,7 +1623,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
                     onClick={handleFinishOnboarding}
                     className="w-full bg-neutral-950 text-white font-bold py-4 px-6 rounded-full hover:bg-neutral-800 transition active:scale-[0.99] text-base shadow-xl shadow-neutral-950/15 flex items-center justify-center gap-2"
                   >
-                    <span>Enter SnapCal Dashboard</span>
+                    <span>Enter Scancalai Dashboard</span>
                     <Sparkles className="w-5 h-5 text-amber-300" />
                   </button>
                 </div>
@@ -1633,7 +1635,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete, onSi
 
       {/* Footer copyright */}
       <footer className="py-4 text-center text-xs text-neutral-400 border-t border-neutral-100">
-        SnapCal · Clinical Mifflin-St Jeor Energy Formulation · Secure & Private
+        Scancalai · Clinical Mifflin-St Jeor Energy Formulation · Secure & Private
       </footer>
     </div>
   );

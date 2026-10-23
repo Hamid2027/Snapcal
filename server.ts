@@ -201,7 +201,7 @@ app.post('/api/estimate-food', async (req: Request, res: Response): Promise<void
 app.get('/api/status', (_req, res) => {
   res.json({
     status: 'ok',
-    appName: 'SnapCal',
+    appName: 'Scancalai',
     aiConfigured: Boolean(ai),
     timestamp: new Date().toISOString()
   });
@@ -224,7 +224,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 SnapCal server listening on port ${PORT}`);
+    console.log(`🚀 Scancalai server listening on port ${PORT}`);
   });
 }
 

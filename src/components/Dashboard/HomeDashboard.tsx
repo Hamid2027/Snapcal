@@ -208,7 +208,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                 )}
               </div>
               <div className="text-[11px] text-neutral-400">
-                Unlock unlimited AI scans with SnapCal Pro
+                Unlock unlimited AI scans with Scancalai Pro
               </div>
             </div>
           </div>
@@ -339,13 +339,13 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
               <span className="text-emerald-700 font-black">{caloriesLeft} remaining</span>
             </div>
 
-            {/* Consumed vs Remaining bottom bar */}
-            <div className="grid grid-cols-2 divide-x divide-neutral-100 pt-3 border-t border-neutral-100 text-xs">
-              <div>
+            {/* Consumed vs Remaining bottom bar (Flexbox for cross-browser stability) */}
+            <div className="flex divide-x divide-neutral-100 pt-3 border-t border-neutral-100 text-xs">
+              <div className="flex-1 text-center">
                 <div className="text-neutral-400 font-medium">Consumed</div>
                 <div className="text-base font-black text-neutral-950 mt-0.5">{consumedCalories} kcal</div>
               </div>
-              <div>
+              <div className="flex-1 text-center">
                 <div className="text-neutral-400 font-medium">Remaining</div>
                 <div className="text-base font-black text-emerald-600 mt-0.5">{caloriesLeft} kcal</div>
               </div>
@@ -355,7 +355,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
           {/* MACRO PROGRESS CARDS (Protein, Carbs, Fat) */}
           <div className="grid grid-cols-3 gap-2.5">
             {/* Protein */}
-            <div className="bg-gradient-to-br from-indigo-50/90 via-blue-50/60 to-white border border-indigo-100/90 rounded-[24px] p-3.5 shadow-sm text-center">
+            <div className="bg-gradient-to-br from-indigo-50/90 via-blue-50/60 to-white border border-indigo-100/90 rounded-[24px] overflow-hidden p-3.5 shadow-sm text-center">
               <div className="text-[10px] font-black uppercase text-indigo-700 tracking-wider">Protein</div>
               <div className="text-xl font-black text-indigo-950 mt-1">{proteinLeft}g</div>
               <div className="text-[10px] text-indigo-500/80 font-bold">left</div>
@@ -371,7 +371,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
             </div>
 
             {/* Carbs */}
-            <div className="bg-gradient-to-br from-amber-50/90 via-amber-50/60 to-white border border-amber-100/90 rounded-[24px] p-3.5 shadow-sm text-center">
+            <div className="bg-gradient-to-br from-amber-50/90 via-amber-50/60 to-white border border-amber-100/90 rounded-[24px] overflow-hidden p-3.5 shadow-sm text-center">
               <div className="text-[10px] font-black uppercase text-amber-700 tracking-wider">Carbs</div>
               <div className="text-xl font-black text-amber-950 mt-1">{carbsLeft}g</div>
               <div className="text-[10px] text-amber-600/80 font-bold">left</div>
@@ -387,7 +387,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
             </div>
 
             {/* Fat */}
-            <div className="bg-gradient-to-br from-rose-50/90 via-pink-50/60 to-white border border-rose-100/90 rounded-[24px] p-3.5 shadow-sm text-center">
+            <div className="bg-gradient-to-br from-rose-50/90 via-pink-50/60 to-white border border-rose-100/90 rounded-[24px] overflow-hidden p-3.5 shadow-sm text-center">
               <div className="text-[10px] font-black uppercase text-rose-700 tracking-wider">Fat</div>
               <div className="text-xl font-black text-rose-950 mt-1">{fatLeft}g</div>
               <div className="text-[10px] text-rose-600/80 font-bold">left</div>

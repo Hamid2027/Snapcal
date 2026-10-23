@@ -148,52 +148,53 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
         {/* 2 PRICING OPTIONS ONLY */}
         <div className="space-y-3 mb-6">
           {/* OPTION 1: 12 MONTHS (MOST POPULAR - GREEN BADGE - SELECTED BY DEFAULT) */}
-          <div
-            onClick={() => setSelectedPlan('annual')}
-            className={`cursor-pointer relative p-4 sm:p-5 rounded-[24px] border-2 transition-all flex items-center justify-between ${
-              selectedPlan === 'annual'
-                ? 'border-neutral-950 bg-neutral-50 shadow-md ring-1 ring-neutral-950'
-                : 'border-neutral-200/80 bg-white hover:border-neutral-300'
-            }`}
-          >
-            {/* Green Badge */}
-            <div className="absolute -top-3 left-6 bg-emerald-500 text-white text-[11px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+          <div className="relative pt-2">
+            <div className="absolute top-0 left-6 z-10 bg-emerald-500 text-white text-[11px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
               <span>MOST POPULAR · SAVE 50%</span>
             </div>
 
-            <div className="flex items-center gap-3 mt-1 sm:mt-0">
-              <div
-                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                  selectedPlan === 'annual'
-                    ? 'border-neutral-950 bg-neutral-950 text-white'
-                    : 'border-neutral-300'
-                }`}
-              >
-                {selectedPlan === 'annual' && <Check className="w-4 h-4 stroke-[3]" />}
-              </div>
-              <div>
-                <div className="font-extrabold text-neutral-950 text-base">12 Months (Annual)</div>
-                <div className="text-xs text-neutral-500 flex items-center gap-1.5 mt-0.5">
-                  <span className="line-through text-neutral-400 font-semibold">$59.99</span>
-                  <span className="font-bold text-neutral-900">$29.99 / year</span>
-                  <span className="text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
-                    $2.50/mo
-                  </span>
+            <div
+              onClick={() => setSelectedPlan('annual')}
+              className={`cursor-pointer p-4 sm:p-5 rounded-[24px] overflow-hidden border-2 transition-all flex items-center justify-between ${
+                selectedPlan === 'annual'
+                  ? 'border-neutral-950 bg-neutral-50 shadow-md ring-1 ring-neutral-950'
+                  : 'border-neutral-200/80 bg-white hover:border-neutral-300'
+              }`}
+            >
+              <div className="flex items-center gap-3 mt-1 sm:mt-0">
+                <div
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    selectedPlan === 'annual'
+                      ? 'border-neutral-950 bg-neutral-950 text-white'
+                      : 'border-neutral-300'
+                  }`}
+                >
+                  {selectedPlan === 'annual' && <Check className="w-4 h-4 stroke-[3]" />}
+                </div>
+                <div>
+                  <div className="font-extrabold text-neutral-950 text-base">12 Months (Annual)</div>
+                  <div className="text-xs text-neutral-500 flex items-center gap-1.5 mt-0.5">
+                    <span className="line-through text-neutral-400 font-semibold">$59.99</span>
+                    <span className="font-bold text-neutral-900">$29.99 / year</span>
+                    <span className="text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
+                      $2.50/mo
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="text-right">
-              <div className="text-xl font-black text-neutral-950">$2.50</div>
-              <div className="text-[10px] text-neutral-400 font-semibold uppercase">per month</div>
+              <div className="text-right">
+                <div className="text-xl font-black text-neutral-950">$2.50</div>
+                <div className="text-[10px] text-neutral-400 font-semibold uppercase">per month</div>
+              </div>
             </div>
           </div>
 
           {/* OPTION 2: 3 MONTHS */}
           <div
             onClick={() => setSelectedPlan('quarterly')}
-            className={`cursor-pointer p-4 sm:p-5 rounded-[24px] border-2 transition-all flex items-center justify-between ${
+            className={`cursor-pointer p-4 sm:p-5 rounded-[24px] overflow-hidden border-2 transition-all flex items-center justify-between ${
               selectedPlan === 'quarterly'
                 ? 'border-neutral-950 bg-neutral-50 shadow-md ring-1 ring-neutral-950'
                 : 'border-neutral-200/80 bg-white hover:border-neutral-300'
@@ -242,7 +243,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
               <span className="text-neutral-400 text-[10px]">· Verified User</span>
             </div>
             <p className="text-neutral-700 font-medium italic text-xs leading-relaxed">
-              “Lost 12 lbs in 30 days with SnapCal! Finally an app that understands women's bodies!”
+              “Lost 12 lbs in 30 days with Scancalai! Finally an app that understands women's bodies!”
             </p>
           </div>
         </div>
@@ -256,10 +257,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             className="w-full bg-[#000000] text-[#FFFFFF] font-bold py-4 px-6 rounded-full hover:bg-neutral-800 transition active:scale-[0.99] text-base shadow-xl flex items-center justify-center gap-2"
           >
             {isProcessing ? (
-              <span className="animate-pulse">Activating SnapCal Pro...</span>
+              <span className="animate-pulse">Activating Scancalai Pro...</span>
             ) : (
               <>
-                <span className="font-bold">Upgrade to SnapCal Pro</span>
+                <span className="font-bold">Continue</span>
                 <Zap className="w-5 h-5 text-yellow-400 fill-yellow-400" />
               </>
             )}

@@ -1,5 +1,5 @@
 {
-  "name": "SnapCal - AI Calorie & Nutrition Tracker",
+  "name": "Scancalai - AI Calorie Tracker",
   "description": "Minimal premium calorie and macro tracking with AI food photo scanning, personalized Mifflin-St Jeor plans, and daily progress analytics.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
